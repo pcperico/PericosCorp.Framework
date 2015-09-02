@@ -39,4 +39,21 @@ public class LoggerService implements ILoggerService {
         fh.flush();
         fh.close();
 	}
+	
+	 public void LogInfo(String info,String path) {
+	        try {      
+	            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");            
+	            fh = new FileHandler(String.format("%sLog-%s.log", path,dateFormat.format(Calendar.getInstance().getTime())),true);                      
+	            logger.addHandler(fh);
+	            SimpleFormatter formatter = new SimpleFormatter();  
+	            fh.setFormatter(formatter);  
+	        } catch (IOException ex1) {
+	            System.out.println(ex1.getMessage());
+	        } catch (SecurityException ex1) {
+	            System.out.println(ex1.getMessage());
+	        }
+	        logger.info(info);        
+	        fh.flush();
+	        fh.close();
+	    }
 }

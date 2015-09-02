@@ -8,23 +8,34 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import PericosCorp.Framework.Core.ConfigurationHelper;
+import PericosCorp.Framework.Core.Services.Implementation.LoggerService;
+
 
 
 public class Repository<T> implements IRepository<T> {	
 	protected Session session;
     protected Transaction tx;    
-    
+    LoggerService ls = new LoggerService();
     protected void beginOperation() throws HibernateException
     {
-        session = HibernateUtil.getSessionFactory().openSession();
-        tx = session.beginTransaction();
+    	try
+    	{
+    		session = HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();	
+    	}
+    	catch(Exception ex)
+    	{
+    		 ls.LogSever(ex, ConfigurationHelper.GetLogPaths());
+    	}        
     }
     
     protected void manageException(Exception he) throws HibernateException
     {
         tx.rollback();
-        session.close();        
-        throw new HibernateException("Ocurrió un error en la capa de acceso a datos", he);
+        session.close();  
+        ls.LogSever(he, HibernateUtil.GetLogsPath());
+        throw new HibernateException("Error on data tier", he);
     }
     
     protected void finishOperation()
@@ -49,12 +60,12 @@ public class Repository<T> implements IRepository<T> {
 	public T Get(int id) {			
 		beginOperation();
         try 
-        {
+        {        	
             return (T) session.get(getGenericClass(), id);
         } 
         catch (ClassNotFoundException ex) 
         {
-            //Logger.getLogger(RepositoryBase.class.getName()).log(Level.SEVERE, null, ex);
+           manageException(ex);
         }
         finally
         {
@@ -66,7 +77,7 @@ public class Repository<T> implements IRepository<T> {
 	public void SaveUpdate(T entity) {
 		try 
         { 
-            beginOperation();
+			beginOperation();	
             session.saveOrUpdate(entity);             
         }
 		catch(Exception he) 
@@ -105,7 +116,7 @@ public class Repository<T> implements IRepository<T> {
 	     }
 	     catch (ClassNotFoundException ex) 
 	     {
-	    	 //Logger.getLogger(RepositoryBase.class.getName()).log(Level.SEVERE, null, ex);
+	    	manageException(ex);	    	
 	     }
 	     finally{
 	            session.close();
