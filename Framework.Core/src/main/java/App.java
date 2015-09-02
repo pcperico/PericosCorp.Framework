@@ -1,4 +1,6 @@
-package PericosCorp.Framework.Core;
+import PericosCorp.Framework.Core.ConfigurationHelper;
+
+
 
 public class App 
 {

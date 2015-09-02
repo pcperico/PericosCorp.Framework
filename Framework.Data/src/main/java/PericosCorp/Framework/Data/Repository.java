@@ -8,6 +8,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+
+
 public class Repository<T> implements IRepository<T> {	
 	protected Session session;
     protected Transaction tx;    
@@ -44,7 +46,7 @@ public class Repository<T> implements IRepository<T> {
     }    
 
 	@SuppressWarnings("unchecked")
-	public T Get(int id) {		
+	public T Get(int id) {			
 		beginOperation();
         try 
         {
