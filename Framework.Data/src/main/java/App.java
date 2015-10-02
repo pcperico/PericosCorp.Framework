@@ -1,20 +1,18 @@
+import java.io.Console;
+
+import org.apache.catalina.startup.ClassLoaderFactory.Repository;
+
 import PericosCorp.Framework.Core.ConfigurationHelper;
 import PericosCorp.Framework.Core.Services.Implementation.LoggerService;
+import PericosCorp.Framework.Data.HibernateUtil;
 
 
 public class App 
 {
-    public static void main( String[] args )
+    public static void main(String[] args)
     {
-    	LoggerService ls=new LoggerService();
-    	try{
-    		throw new Exception();
-    	}
-    	catch(Exception ex)
-    	{
-    		ls.LogSever(ex, ConfigurationHelper.GetLogPaths());
-    	}
-        System.out.println( "Hello World! ");
-        
+    	String path=ConfigurationHelper.GetLogPaths();
+    	System.out.println(path);
+    	HibernateUtil.getSessionFactory();        
     }
 }

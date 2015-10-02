@@ -16,7 +16,7 @@ public class ConfigurationHelper {
 	{
 		try {
 			File file = new File("AppConfigurations.xml");
-			System.out.println(file.getAbsolutePath());
+			System.out.println("Location of AppConfigurations.xml: "+file.getAbsolutePath());
 			FileInputStream fileInput = new FileInputStream(file);
 			Properties properties = new Properties();
 			properties.loadFromXML(fileInput);
