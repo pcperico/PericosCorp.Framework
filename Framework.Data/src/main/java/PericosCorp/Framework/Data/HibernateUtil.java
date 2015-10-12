@@ -4,8 +4,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-
-import PericosCorp.Framework.Core.ConfigurationHelper;
 import PericosCorp.Framework.Core.Services.Implementation.LoggerService;
 
 public class HibernateUtil {
