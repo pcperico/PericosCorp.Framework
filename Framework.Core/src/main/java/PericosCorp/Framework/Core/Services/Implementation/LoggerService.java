@@ -15,8 +15,9 @@ import PericosCorp.Framework.Core.Services.Interfaces.ILoggerService;
 public class LoggerService implements ILoggerService {
 	Logger logger = Logger.getLogger("Logs");  
 	FileHandler fh;  
-	public void LogSever(Exception ex,String path) 
-	{
+	private String path;
+	public void LogSever(Exception ex) 
+	{		
 		try 
 		{          
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -40,7 +41,7 @@ public class LoggerService implements ILoggerService {
         fh.close();
 	}
 	
-	 public void LogInfo(String info,String path) {
+	 public void LogInfo(String info) {		 
 	        try {      
 	            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");            
 	            fh = new FileHandler(String.format("%sLog-%s.log", path,dateFormat.format(Calendar.getInstance().getTime())),true);                      
@@ -56,4 +57,12 @@ public class LoggerService implements ILoggerService {
 	        fh.flush();
 	        fh.close();
 	    }
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
 }

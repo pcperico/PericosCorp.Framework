@@ -1,22 +1,35 @@
 package PericosCorp.Framework.Data;
 
-import java.util.List;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import PericosCorp.Framework.Core.ConfigurationHelper;
-import PericosCorp.Framework.Core.Services.Implementation.LoggerService;
+import PericosCorp.Framework.Core.Services.Interfaces.ILoggerService;
 
 
 
 public class Repository<T> implements IRepository<T> {	
 	protected Session session;
+	
+	
+	
     protected Transaction tx;    
-    LoggerService ls = new LoggerService();
+    ILoggerService loggerService;
+    private void setLoggerService()
+    {
+    	if(loggerService==null)
+    	{
+    		@SuppressWarnings("resource")
+			ApplicationContext ctx = new ClassPathXmlApplicationContext("DataContext.xml");
+    		loggerService=(ILoggerService) ctx.getBean("ILoggerServiceDataTier");
+    	}
+    }
     protected void beginOperation() throws HibernateException
     {
     	try
@@ -26,7 +39,8 @@ public class Repository<T> implements IRepository<T> {
     	}
     	catch(Exception ex)
     	{
-    		 ls.LogSever(ex, ConfigurationHelper.GetLogPaths());
+    		setLoggerService();
+    		loggerService.LogSever(ex);
     	}        
     }
     
@@ -34,7 +48,8 @@ public class Repository<T> implements IRepository<T> {
     {
         tx.rollback();
         session.close();  
-        ls.LogSever(he, HibernateUtil.GetLogsPath());
+        setLoggerService();
+        loggerService.LogSever(he);
         throw new HibernateException("Error on data tier", he);
     }
     
