@@ -37,4 +37,14 @@
     		<version>4.1.6.RELEASE</version>
     	</dependency>
 	</dependencies>
+	<build>
+    	<resources>    		
+        	<resource>
+            	<directory>src/main/resources</directory>
+            	<includes>
+          			<include>DataContext.xml</include>          
+        		</includes>
+        	</resource>
+    	</resources>
+ 	</build>	
 </project>
