@@ -1,1 +1,3 @@
+Framework.Data/target/*.jar
 Framework.Data/target/
+Framework.Core/target/
