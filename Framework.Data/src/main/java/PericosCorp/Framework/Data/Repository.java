@@ -1,9 +1,15 @@
+/* 
+     * Repository
+     * Created on 03-11-2015
+     * Copyright(c) 2015 PericosCorp Company, Inc.  All Rights Reserved.
+     * This software is the proprietary information of PericosCorp Company.
+ */
+
 package PericosCorp.Framework.Data;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -12,16 +18,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import PericosCorp.Framework.Core.Services.Interfaces.ILoggerService;
 
-
+/**
+*
+* @author Arturo E. Salinas
+*/
 
 public class Repository<T> implements IRepository<T> {	
 	protected Session session;
-	
-	
-	
     protected Transaction tx;    
-    ILoggerService loggerService;
-    private void setLoggerService()
+    protected ILoggerService loggerService;
+    
+    public void setLoggerService()
     {
     	if(loggerService==null)
     	{
@@ -30,6 +37,7 @@ public class Repository<T> implements IRepository<T> {
     		loggerService=(ILoggerService) ctx.getBean("ILoggerServiceDataTier");
     	}
     }
+    
     protected void beginOperation() throws HibernateException
     {
     	try
