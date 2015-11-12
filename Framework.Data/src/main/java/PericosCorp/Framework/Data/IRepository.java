@@ -1,9 +1,9 @@
-/* 
-     * IRepository
-     * Created on 03-11-2015
-     * Copyright(c) 2015 PericosCorp Company, Inc.  All Rights Reserved.
-     * This software is the proprietary information of PericosCorp Company.
- */
+/*******************************************************************************
+ * IRepository
+ * Created on 03-11-2015
+ * Copyright(c) 2015 PericosCorp Company, Inc.  All Rights Reserved.
+ * This software is the proprietary information of PericosCorp Company.
+ *******************************************************************************/
 
 package PericosCorp.Framework.Data;
 
