@@ -38,6 +38,12 @@ public class Repository<T> implements IRepository<T> {
     	}
     }
     
+    
+    public Repository()
+    {
+    	if(loggerService==null)
+    		setLoggerService();
+    }
     protected void beginOperation() throws HibernateException
     {
     	try
@@ -47,7 +53,7 @@ public class Repository<T> implements IRepository<T> {
     	}
     	catch(Exception ex)
     	{
-    		setLoggerService();
+    		//setLoggerService();
     		loggerService.LogSever(ex);
     	}        
     }
@@ -56,14 +62,22 @@ public class Repository<T> implements IRepository<T> {
     {
         tx.rollback();
         session.close();  
-        setLoggerService();
+        //setLoggerService();
         loggerService.LogSever(he);
         throw new HibernateException("Error on data tier", he);
     }
     
     protected void finishOperation()
     {
-        tx.commit();
+    	try
+    	{
+    		tx.commit();    		
+    	}
+    	catch(Exception ex)
+    	{
+    		manageException(ex);
+    	}
+        
     }
     
     @SuppressWarnings("unchecked")
@@ -79,6 +93,9 @@ public class Repository<T> implements IRepository<T> {
         return inferedClass;
     }    
 
+    /**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	public T Get(int id) {			
 		beginOperation();
@@ -97,6 +114,9 @@ public class Repository<T> implements IRepository<T> {
         return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void SaveUpdate(T entity) {
 		try 
         { 
@@ -113,6 +133,9 @@ public class Repository<T> implements IRepository<T> {
         } 		
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void Delete(T entity) {
 		try 
         { 
@@ -130,6 +153,9 @@ public class Repository<T> implements IRepository<T> {
         } 		
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	public List<T> GetAll() {
 		 beginOperation();
@@ -147,6 +173,9 @@ public class Repository<T> implements IRepository<T> {
 	     return null;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	public Integer Save(T entity) {
 		int id =0;
         try 
@@ -163,6 +192,9 @@ public class Repository<T> implements IRepository<T> {
         return id;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	public void Update(T entity) {
 		try 
         { 
