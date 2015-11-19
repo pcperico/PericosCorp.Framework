@@ -13,15 +13,17 @@ package PericosCorp.Framework.Core.Services.Implementation;
 * @author Arturo E. Salinas
 */
 
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import PericosCorp.Framework.Core.Services.Interfaces.ILoggerService;
 
 
@@ -35,6 +37,10 @@ public class LoggerService implements ILoggerService {
 	 */
 	public void LogSever(Exception ex) {
 		try {
+			if(!new File(path).exists())
+			{
+				new File("path").mkdir();
+			}			
 			DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			fh = new FileHandler(String.format("%sLog-%s.log", path,
 					dateFormat.format(Calendar.getInstance().getTime())), true);
@@ -48,7 +54,7 @@ public class LoggerService implements ILoggerService {
 		}
 		StringWriter errors = new StringWriter();
 		ex.printStackTrace(new PrintWriter(errors));
-		logger.severe(errors.toString());
+		logger.severe(errors.toString());		
 		fh.flush();
 		fh.close();
 	}
@@ -58,6 +64,10 @@ public class LoggerService implements ILoggerService {
 	 */
 	public void LogInfo(String info) {
 		try {
+			if(!new File(path).exists())
+			{
+				new File("path").mkdir();
+			}
 			DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			fh = new FileHandler(String.format("%sLog-%s.log", path,
 					dateFormat.format(Calendar.getInstance().getTime())), true);
