@@ -48,7 +48,8 @@ public class HibernateUtil {
         	loggerService.LogSever(ex);        	
             throw new ExceptionInInitializerError(ex);
         }
-    }
+    }    
+    
 
     public static SessionFactory getSessionFactory() {
         return sessionFactory;

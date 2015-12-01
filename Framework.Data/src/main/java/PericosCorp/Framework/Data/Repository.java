@@ -48,12 +48,12 @@ public class Repository<T> implements IRepository<T> {
     {
     	try
     	{
+    		closeSession();
     		session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();	
     	}
     	catch(Exception ex)
     	{
-    		//setLoggerService();
     		loggerService.LogSever(ex);
     	}        
     }
@@ -65,6 +65,15 @@ public class Repository<T> implements IRepository<T> {
         //setLoggerService();
         loggerService.LogSever(he);
         throw new HibernateException("Error on data tier", he);
+    }
+    
+    protected void closeSession()
+    {
+    	if(session!=null && session.isOpen())
+    	{
+    		session.flush();
+    		session.close();    		
+    	}
     }
     
     protected void finishOperation()
