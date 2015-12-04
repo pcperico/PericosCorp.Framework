@@ -47,8 +47,7 @@ public class Repository<T> implements IRepository<T> {
     protected void beginOperation() throws HibernateException
     {
     	try
-    	{
-    		closeSession();
+    	{    		
     		session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();	
     	}
@@ -60,9 +59,9 @@ public class Repository<T> implements IRepository<T> {
     
     protected void manageException(Exception he) throws HibernateException
     {
+    	session.flush();
         tx.rollback();
-        session.close();  
-        //setLoggerService();
+        session.close();
         loggerService.LogSever(he);
         throw new HibernateException("Error on data tier", he);
     }
@@ -70,8 +69,10 @@ public class Repository<T> implements IRepository<T> {
     protected void closeSession()
     {
     	if(session!=null && session.isOpen())
-    	{
+    	{    		
     		session.flush();
+    		tx.rollback();
+            session.clear();
     		session.close();    		
     	}
     }
@@ -80,7 +81,10 @@ public class Repository<T> implements IRepository<T> {
     {
     	try
     	{
-    		tx.commit();    		
+            session.flush();
+    		tx.commit();
+    		session.clear();
+    		session.close();
     	}
     	catch(Exception ex)
     	{
@@ -118,7 +122,7 @@ public class Repository<T> implements IRepository<T> {
         }
         finally
         {
-            session.close();
+            finishOperation();
         }
         return null;
 	}
@@ -177,7 +181,7 @@ public class Repository<T> implements IRepository<T> {
 	    	manageException(ex);	    	
 	     }
 	     finally{
-	            session.close();
+	            finishOperation();
 	     }
 	     return null;
 	}
