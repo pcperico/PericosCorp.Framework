@@ -16,6 +16,8 @@ public final class StringsHelpers {
 	 */
 	public static String GetStringofDate(Date date)
 	{
+		if(date==null)
+			return "";
 		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		 return sdf.format(date);	
 	}
